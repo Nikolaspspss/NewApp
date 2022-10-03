@@ -27,12 +27,13 @@ class PostList(ListView):
         # Добавим ещё одну пустую переменную,
         # чтобы на её примере рассмотреть работу ещё одного фильтра.
         context['next_sale'] = 'Новости скора будут'
+        
         return context
 
 class PostDetail(DetailView):
     # Модель всё та же, но мы хотим получать информацию по отдельному товару
     model = Post
     # Используем другой шаблон — product.html
-    template_name = 'News.html'
+    template_name = 'News2.html'
     # Название объекта, в котором будет выбранный пользователем продукт
     context_object_name = 'Post'

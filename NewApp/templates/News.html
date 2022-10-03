@@ -6,6 +6,7 @@ Post
 
 {% block content %}
    <h1>Все новости</h1>
+   <h5>Всего новостей: {{ Post|length }}</h5>
    <h3>{{ time_now }}</h3>
    <h3> {{ next_sale|default_if_none:"Чуть позже сообщим о новостях!" }} </h3>
    <hr>
