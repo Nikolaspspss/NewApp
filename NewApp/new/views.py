@@ -12,6 +12,6 @@ class PostList(ListView):
     template_name = 'News.html'
     # Это имя списка, в котором будут лежать все объекты.
     # Его надо указать, чтобы обратиться к списку объектов в html-шаблоне.
-    context_object_name = 'news'
+    context_object_name = 'new'
 
 
