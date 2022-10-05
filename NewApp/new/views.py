@@ -3,10 +3,8 @@ from django.views.generic import ListView, DetailView
 from .models import Post
 from datetime import datetime
 
-
 class PostList(ListView):
     model = Post
-    ordering = 'categoryType'
     template_name = 'News.html'
     context_object_name = 'Post'
     queryset = Post.objects.filter(categoryType='NW').order_by('-dataCreation')
