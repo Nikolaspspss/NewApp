@@ -24,7 +24,7 @@ Post
                <td>{{ Post.title }}</td>
                <td>{{ Post.text|truncatewords:20 }}</td>
                <td>{{ Post.rating }}</td>
-               <td>{{ Post.dataCreation}}</td>
+               <td>{{ Post.dataCreation|date:'d.m.Y h:m'}}</td>
            </tr>
            {% endfor %}
 
