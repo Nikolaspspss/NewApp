@@ -16,7 +16,6 @@ Post
                <td>Титул</td>
                <td>Текст</td>
                <td>Рейтинг</td>
-               <td>Категория</td>
                <td>Дата публикации</td>
            </tr>
 
@@ -25,7 +24,6 @@ Post
                <td>{{ Post.title }}</td>
                <td>{{ Post.text|truncatewords:20 }}</td>
                <td>{{ Post.rating }}</td>
-               <td>{{ Post.postCategory }}</td>
                <td>{{ Post.dataCreation}}</td>
            </tr>
            {% endfor %}
