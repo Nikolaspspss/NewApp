@@ -1,6 +1,8 @@
 <!--  наследуемся от шаблона default.html, который мы создавали для flatpages -->
 {% extends 'flatpages/default.html' %}
 
+{% load censor %}
+
 <!-- Название у нас будет Product -->
 {% block title %}
 News
@@ -9,7 +11,7 @@ News
 {% block content %}
    <hr>
    <td>{{ Post.title }}</td>
-   <td>{{ Post.text }}</td>
+   <td>{{ Post.text|censor }}</td>
    <td>{{ Post.rating }}</td>
    <td>{{ Post.dataCreation}}</td>
 
