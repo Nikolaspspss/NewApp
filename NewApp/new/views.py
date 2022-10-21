@@ -2,12 +2,14 @@
 from django.views.generic import ListView, DetailView
 from .models import Post
 from datetime import datetime
+from django.http import HttpResponse
 
 class PostList(ListView):
     model = Post
     template_name = 'News.html'
     context_object_name = 'Post'
     queryset = Post.objects.filter(categoryType='NW').order_by('-dataCreation')
+    paginate_by = 1
 
 
     def get_context_data(self, **kwargs):
@@ -33,3 +35,16 @@ class PostDetail(DetailView):
     template_name = 'News2.html'
     # Название объекта, в котором будет выбранный пользователем продукт
     context_object_name = 'Post'
+
+
+def multiply(request):
+   number = request.GET.get('number')
+   multiplier = request.GET.get('multiplier')
+
+   try:
+       result = int(number) * int(multiplier)
+       html = f"<html><body>{number}*{multiplier}={result}</body></html>"
+   except (ValueError, TypeError):
+       html = f"<html><body>Invalid input.</body></html>"
+
+   return HttpResponse(html)
