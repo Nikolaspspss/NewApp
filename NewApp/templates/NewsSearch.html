@@ -6,6 +6,13 @@ Post
 
 {% block content %}
    <h1>Все новости</h1>
+   {# Добавляем форму, которая объединяет набор полей, которые будут отправляться в запросе #}
+<form action="" method="get">
+   {{ filterset.form.as_p }}
+    <h5>Формат ввода даты ГГГГ-ММ-ДД</h5>
+   <input type="submit" value="Найти" />
+</form>
+
    <h5>Новостей на странице: {{ Post|length }}</h5>
    <h3>{{ time_now }}</h3>
    <h3> {{ next_sale|default_if_none:"Чуть позже сообщим о новостях!" }} </h3>
@@ -32,9 +39,7 @@ Post
    {% else %}
        <h2>Новостей нет!</h2>
    {% endif %}
-   {# Добавляем пагинацию на страницу #}
 
-   {# Информация о предыдущих страницах #}
    {% if page_obj.has_previous %}
        <a href="?page=1">1</a>
        {% if page_obj.previous_page_number != 1 %}
@@ -42,9 +47,8 @@ Post
            <a href="?page={{ page_obj.previous_page_number }}">{{ page_obj.previous_page_number }}</a>
        {% endif %}
    {% endif %}
-   {# Информация о текущей странице #}
    {{ page_obj.number }}
-   {# Информация о следующих страницах #}
+
    {% if page_obj.has_next %}
        <a href="?page={{ page_obj.next_page_number }}">{{ page_obj.next_page_number }}</a>
        {% if paginator.num_pages != page_obj.next_page_number %}
