@@ -1,17 +1,21 @@
 
-from django.views.generic import ListView, DetailView
+from django.views.generic import ListView, DetailView, UpdateView
 from .models import Post
 from django.http import HttpResponse, HttpResponseRedirect
 from .filters import PostFilter
 from .forms import PostForm
 from django.shortcuts import render
+from django.urls import reverse
+
+
+
 
 class PostList(ListView):
     model = Post
     template_name = 'News.html'
     context_object_name = 'Post'
     #queryset = Post.objects.filter(categoryType='NW').order_by('-dataCreation')
-    paginate_by = 1
+    paginate_by = 10
 
     def get_queryset(self):
         # Получаем обычный запрос
@@ -35,11 +39,8 @@ class PostList(ListView):
 
 
 class PostDetail(DetailView):
-    # Модель всё та же, но мы хотим получать информацию по отдельному товару
     model = Post
-    # Используем другой шаблон — product.html
     template_name = 'News2.html'
-    # Название объекта, в котором будет выбранный пользователем продукт
     context_object_name = 'Post'
     paginate_by = 1
 
@@ -81,6 +82,8 @@ class PostSearch(ListView):
 
         return context
 
+
+
 def create_post(request):
     if request.method == "POST":
         form = PostForm(request.POST)
@@ -88,3 +91,11 @@ def create_post(request):
         return HttpResponseRedirect('/news/')
     form = PostForm()
     return render (request, 'post_edit.html', {'form': form})
+
+
+
+
+class PostUpdate(UpdateView):
+    form_class = PostForm
+    model = Post
+    template_name = 'post_edit.html'
