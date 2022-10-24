@@ -1,9 +1,10 @@
 
 from django.views.generic import ListView, DetailView
 from .models import Post
-from django.http import HttpResponse
+from django.http import HttpResponse, HttpResponseRedirect
 from .filters import PostFilter
-
+from .forms import PostForm
+from django.shortcuts import render
 
 class PostList(ListView):
     model = Post
@@ -80,3 +81,10 @@ class PostSearch(ListView):
 
         return context
 
+def create_post(request):
+    if request.method == "POST":
+        form = PostForm(request.POST)
+        form.save()
+        return HttpResponseRedirect('/news/')
+    form = PostForm()
+    return render (request, 'post_edit.html', {'form': form})
