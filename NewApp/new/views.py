@@ -1,12 +1,11 @@
 
-from django.views.generic import ListView, DetailView, UpdateView
+from django.views.generic import ListView, DetailView, UpdateView, DeleteView
 from .models import Post
 from django.http import HttpResponse, HttpResponseRedirect
 from .filters import PostFilter
 from .forms import PostForm
 from django.shortcuts import render
-from django.urls import reverse
-
+from django.urls import reverse_lazy
 
 
 
@@ -99,3 +98,10 @@ class PostUpdate(UpdateView):
     form_class = PostForm
     model = Post
     template_name = 'post_edit.html'
+
+
+class PostDelete(DeleteView):
+    model = Post
+    template_name = 'post_delete.html'
+    success_url = f'/news/'
+

@@ -4,7 +4,6 @@ from django.contrib.auth.models import User
 
 from django.db.models import Sum
 
-from django.urls import reverse
 
 class Author(models.Model):
     authorUser = models.OneToOneField(User, on_delete= models.CASCADE)
@@ -34,7 +33,7 @@ class Post(models.Model):
     ARTICLE = 'AR'
     CATEGORY_CHOICES =  (
         ( NEWS, 'НОВОСТЬ'),
-        (ARTICLE, 'СЧАСТЬЕ')
+        (ARTICLE, 'СТАТЬЯ')
     )
     categoryType = models.CharField(max_length=2, choices=CATEGORY_CHOICES, default=ARTICLE)
     dataCreation = models.DateTimeField(auto_now_add=True)
