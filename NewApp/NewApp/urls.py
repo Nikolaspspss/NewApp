@@ -21,6 +21,7 @@ from new.views import multiply
 urlpatterns = [
    path('admin/', admin.site.urls),
    path('news/', include('new.urls')),
+   path('accounts/', include("allauth.urls")),
    path('multiply/', multiply),
 ]
 

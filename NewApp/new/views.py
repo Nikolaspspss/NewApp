@@ -1,12 +1,12 @@
-
-from django.views.generic import ListView, DetailView, UpdateView, DeleteView
+from django.contrib.auth.mixins import LoginRequiredMixin
+#from django.contrib.auth.decorators import login_required
+from django.views.generic import ListView, DetailView, UpdateView, DeleteView, CreateView
 from .models import Post
 from django.http import HttpResponse, HttpResponseRedirect
 from .filters import PostFilter
 from .forms import PostForm
-from django.shortcuts import render
-from django.urls import reverse_lazy
-
+#from django.shortcuts import render
+#from django.urls import reverse_lazy
 
 
 class PostList(ListView):
@@ -36,12 +36,12 @@ class PostList(ListView):
         return context
 
 
-
-class PostDetail(DetailView):
+class PostDetail(LoginRequiredMixin, DetailView):
     model = Post
     template_name = 'News2.html'
     context_object_name = 'Post'
     paginate_by = 1
+
 
 def multiply(request):
    number = request.GET.get('number')
@@ -81,27 +81,30 @@ class PostSearch(ListView):
 
         return context
 
+#@login_required
+#def create_post(request):
+#    if request.method == "POST":
+#        form = PostForm(request.POST)
+#        form.save()
+#        return HttpResponseRedirect('/news/')
+#    form = PostForm()
+#    return render (request, 'post_edit.html', {'form': form})
 
 
-def create_post(request):
-    if request.method == "POST":
-        form = PostForm(request.POST)
-        form.save()
-        return HttpResponseRedirect('/news/')
-    form = PostForm()
-    return render (request, 'post_edit.html', {'form': form})
-
-
-
-
-class PostUpdate(UpdateView):
+class PostCreate(LoginRequiredMixin, CreateView):
+    raise_exception = True
     form_class = PostForm
     model = Post
     template_name = 'post_edit.html'
 
 
-class PostDelete(DeleteView):
+class PostUpdate(LoginRequiredMixin, UpdateView):
+    form_class = PostForm
+    model = Post
+    template_name = 'post_edit.html'
+
+
+class PostDelete(LoginRequiredMixin, DeleteView):
     model = Post
     template_name = 'post_delete.html'
     success_url = f'/news/'
-
