@@ -1,8 +1,8 @@
-from django.contrib.auth.mixins import LoginRequiredMixin
+from django.contrib.auth.mixins import PermissionRequiredMixin
 #from django.contrib.auth.decorators import login_required
 from django.views.generic import ListView, DetailView, UpdateView, DeleteView, CreateView
 from .models import Post
-from django.http import HttpResponse, HttpResponseRedirect
+from django.http import HttpResponse
 from .filters import PostFilter
 from .forms import PostForm
 #from django.shortcuts import render
@@ -17,26 +17,20 @@ class PostList(ListView):
     paginate_by = 10
 
     def get_queryset(self):
-        # Получаем обычный запрос
+
         queryset = super().get_queryset()
-        # Используем наш класс фильтрации.
-        # self.request.GET содержит объект QueryDict, который мы рассматривали
-        # в этом юните ранее.
-        # Сохраняем нашу фильтрацию в объекте класса,
-        # чтобы потом добавить в контекст и использовать в шаблоне.
         self.filterset = PostFilter(self.request.GET, queryset)
-        # Возвращаем из функции отфильтрованный список товаров
+
         return self.filterset.qs
 
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
-        # Добавляем в контекст объект фильтрации.
         context['filterset'] = self.filterset
 
         return context
 
 
-class PostDetail(LoginRequiredMixin, DetailView):
+class PostDetail(PermissionRequiredMixin, DetailView):
     model = Post
     template_name = 'News2.html'
     context_object_name = 'Post'
@@ -63,20 +57,15 @@ class PostSearch(ListView):
     paginate_by = 10
 
     def get_queryset(self):
-        # Получаем обычный запрос
+
         queryset = super().get_queryset()
-        # Используем наш класс фильтрации.
-        # self.request.GET содержит объект QueryDict, который мы рассматривали
-        # в этом юните ранее.
-        # Сохраняем нашу фильтрацию в объекте класса,
-        # чтобы потом добавить в контекст и использовать в шаблоне.
         self.filterset = PostFilter(self.request.GET, queryset)
-        # Возвращаем из функции отфильтрованный список товаров
+
         return self.filterset.qs
 
     def get_context_data(self, **kwargs):
+
         context = super().get_context_data(**kwargs)
-        # Добавляем в контекст объект фильтрации.
         context['filterset'] = self.filterset
 
         return context
@@ -91,20 +80,22 @@ class PostSearch(ListView):
 #    return render (request, 'post_edit.html', {'form': form})
 
 
-class PostCreate(LoginRequiredMixin, CreateView):
-    raise_exception = True
+class PostCreate(PermissionRequiredMixin, CreateView):
+    permission_required = ('new.add_post',)
     form_class = PostForm
     model = Post
     template_name = 'post_edit.html'
 
 
-class PostUpdate(LoginRequiredMixin, UpdateView):
+class PostUpdate(PermissionRequiredMixin, UpdateView):
+    permission_required = ('new.change_post',)
     form_class = PostForm
     model = Post
     template_name = 'post_edit.html'
 
 
-class PostDelete(LoginRequiredMixin, DeleteView):
+class PostDelete(PermissionRequiredMixin, DeleteView):
+    permission_required = ('new.delete_post',)
     model = Post
     template_name = 'post_delete.html'
     success_url = f'/news/'

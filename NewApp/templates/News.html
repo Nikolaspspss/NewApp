@@ -5,8 +5,14 @@ Post
 {% endblock title %}
 
 {% block content %}
-   <h1>Все новости</h1>
+
+<h1>Все новости</h1>
    <h5>Новостей на странице: {{ Post|length }}</h5>
+    <hr>
+{% if perms.new.add_post %}
+<a href="{% url 'create_post' %}"> Добавить пост </a>
+{% endif %}
+
    <h3>{{ time_now }}</h3>
    <h3> {{ next_sale|default_if_none:"Чуть позже сообщим о новостях!" }} </h3>
    <hr>
@@ -18,8 +24,10 @@ Post
                <td>Рейтинг</td>
                <td>Дата публикации</td>
                <td>Персональный ключ</td>
+                {% if perms.new.change_post or perms.new.delete_post %}
+               <td>Действие</td>
+               {% endif %}
            </tr>
-
            {% for Post in Post %}
            <tr>
                <td>{{ Post.title }}</td>
@@ -27,6 +35,14 @@ Post
                <td>{{ Post.rating }}</td>
                <td>{{ Post.dataCreation|date:'d.m.Y h:m'}}</td>
                <td>{{ Post.pk}}</td>
+               <td>
+                    {% if perms.new.change_post %}
+                    <a href="{% url 'post_update' pk=Post.id %}">Изменить</a>
+                    {% endif %}
+                    {% if perms.new.delete_post %}
+                    <a href="{% url 'post_delete' Post.id %}">Удалить</a>
+                    {% endif %}
+                </td>
            </tr>
            {% endfor %}
 
@@ -34,9 +50,8 @@ Post
    {% else %}
        <h2>Новостей нет!</h2>
    {% endif %}
-   {# Добавляем пагинацию на страницу #}
 
-   {# Информация о предыдущих страницах #}
+
    {% if page_obj.has_previous %}
        <a href="?page=1">1</a>
        {% if page_obj.previous_page_number != 1 %}
