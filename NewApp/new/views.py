@@ -30,7 +30,7 @@ class PostList(ListView):
         return context
 
 
-class PostDetail(PermissionRequiredMixin, DetailView):
+class PostDetail(DetailView):
     model = Post
     template_name = 'News2.html'
     context_object_name = 'Post'
