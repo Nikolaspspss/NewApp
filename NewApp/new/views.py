@@ -1,19 +1,18 @@
 from django.contrib.auth.mixins import PermissionRequiredMixin
-#from django.contrib.auth.decorators import login_required
+
 from django.views.generic import ListView, DetailView, UpdateView, DeleteView, CreateView
 from .models import Post
 from django.http import HttpResponse
 from .filters import PostFilter
 from .forms import PostForm
-#from django.shortcuts import render
-#from django.urls import reverse_lazy
+
+
 
 
 class PostList(ListView):
     model = Post
     template_name = 'News.html'
     context_object_name = 'Post'
-    #queryset = Post.objects.filter(categoryType='NW').order_by('-dataCreation')
     paginate_by = 10
 
     def get_queryset(self):
@@ -53,7 +52,6 @@ class PostSearch(ListView):
     model = Post
     template_name = 'NewsSearch.html'
     context_object_name = 'Post'
-    #queryset = Post.objects.filter(categoryType='NW').order_by('-dataCreation')
     paginate_by = 10
 
     def get_queryset(self):
@@ -69,15 +67,6 @@ class PostSearch(ListView):
         context['filterset'] = self.filterset
 
         return context
-
-#@login_required
-#def create_post(request):
-#    if request.method == "POST":
-#        form = PostForm(request.POST)
-#        form.save()
-#        return HttpResponseRedirect('/news/')
-#    form = PostForm()
-#    return render (request, 'post_edit.html', {'form': form})
 
 
 class PostCreate(PermissionRequiredMixin, CreateView):
@@ -99,3 +88,5 @@ class PostDelete(PermissionRequiredMixin, DeleteView):
     model = Post
     template_name = 'post_delete.html'
     success_url = f'/news/'
+
+

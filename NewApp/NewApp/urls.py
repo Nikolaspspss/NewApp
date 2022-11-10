@@ -15,10 +15,11 @@ Including another URLconf
 """
 from django.contrib import admin
 from django.urls import path, include
-from new.views import multiply
+from new.views import multiply, PostList
 
 
 urlpatterns = [
+   path('', PostList.as_view(), name='moy_sait'),
    path('admin/', admin.site.urls),
    path('news/', include('new.urls')),
    path('accounts/', include("allauth.urls")),

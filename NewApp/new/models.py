@@ -6,6 +6,7 @@ from django.db.models import Sum
 
 
 class Author(models.Model):
+
     authorUser = models.OneToOneField(User, on_delete= models.CASCADE)
     ratingAuthor = models.SmallIntegerField(default=0)
 
@@ -27,8 +28,8 @@ class Category(models.Model):
 
 
 class Post(models.Model):
-    author_post = models.ForeignKey(Author, on_delete=models.CASCADE)
 
+    author_post = models.ForeignKey(User, on_delete=models.CASCADE)
     NEWS = 'NW'
     ARTICLE = 'AR'
     CATEGORY_CHOICES =  (
@@ -77,5 +78,3 @@ class Comment(models.Model):
     def dislike(self):
         self.rating -= 1
         self.save()
-
-
