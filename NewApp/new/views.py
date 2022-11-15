@@ -1,10 +1,11 @@
 from django.contrib.auth.mixins import PermissionRequiredMixin
 
 from django.views.generic import ListView, DetailView, UpdateView, DeleteView, CreateView
-from .models import Post
+from .models import Post, Category
 from django.http import HttpResponse
 from .filters import PostFilter
 from .forms import PostForm
+from django.shortcuts import get_object_or_404
 
 
 
@@ -88,5 +89,22 @@ class PostDelete(PermissionRequiredMixin, DeleteView):
     model = Post
     template_name = 'post_delete.html'
     success_url = f'/news/'
+
+
+class CategoryListView(ListView):
+    model = Post
+    template_name = 'category_list.html'
+    context_object_name = 'category_list'
+
+    def get_queryset(self):
+        self.category = get_object_or_404(Category, id=self.kwargs['pk'])
+        queryset = Post.objects.filter(category=self.category).order_by('-date')
+        return queryset
+
+    def get_context_data(self, **kwargs):
+        context = super().get_context_data(**kwargs)
+        context['is_not_subscriber'] = self.request.user not in self.category.subscribers.all()
+        context['category'] = self.category
+        return context
 
 

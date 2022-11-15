@@ -9,5 +9,7 @@ class PostForm(forms.ModelForm):
            'title',
            'text',
            'categoryType',
+           'postCategory',
            'author_post',
+
        ]
