@@ -16,7 +16,7 @@ Post
    <h3>{{ time_now }}</h3>
    <h3> {{ next_sale|default_if_none:"Чуть позже сообщим о новостях!" }} </h3>
    <hr>
-   {% if Post %}
+   {% if category_news_list %}
        <table>
            <tr>
                <td>Титул</td>
@@ -29,7 +29,7 @@ Post
                <td>Действие</td>
                {% endif %}
            </tr>
-           {% for Post in Post  %}
+           {% for Post in category_news_list  %}
            <tr>
                <td>{{ Post.title }}</td>
                <td>{{ Post.text|truncatechars:20 }}</td>
@@ -38,7 +38,7 @@ Post
                <td>{{ Post.categoryType}}</td>
                <td>
                    {% for category in Post.postCategory.all %}
-                   <a href="{% url 'category_list' pk=Post.id %}"> {{category.name}} </a>
+                   <a href="{% url 'category_list' Post.id %}"> {{category.name}} </a>
                    {% endfor %}
                </td>
 
@@ -78,3 +78,4 @@ Post
    {% endif %}
 
 {% endblock content %}
+

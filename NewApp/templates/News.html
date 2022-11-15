@@ -38,7 +38,7 @@ Post
                <td>{{ Post.categoryType}}</td>
                <td>
                    {% for category in Post.postCategory.all %}
-                   <a href="{% url 'category_list' pk=Post.id %}"> {{category.name}} </a>
+                   <a href="{% url 'category_list' category.id %}"> {{category.name}} </a>
                    {% endfor %}
                </td>
 

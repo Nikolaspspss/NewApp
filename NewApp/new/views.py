@@ -32,7 +32,7 @@ class PostList(ListView):
 
 class PostDetail(DetailView):
     model = Post
-    template_name = 'News2.html'
+    template_name = 'NewsDetail.html'
     context_object_name = 'Post'
     paginate_by = 1
 
@@ -94,17 +94,17 @@ class PostDelete(PermissionRequiredMixin, DeleteView):
 class CategoryListView(ListView):
     model = Post
     template_name = 'category_list.html'
-    context_object_name = 'category_list'
+    context_object_name = 'category_news_list'
 
     def get_queryset(self):
-        self.category = get_object_or_404(Category, id=self.kwargs['pk'])
-        queryset = Post.objects.filter(category=self.category).order_by('-date')
+        self.post_category = get_object_or_404(Category, id=self.kwargs['pk'])
+        queryset = Post.objects.filter(postCategory=self.post_category).order_by('-dataCreation')
         return queryset
 
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
-        context['is_not_subscriber'] = self.request.user not in self.category.subscribers.all()
-        context['category'] = self.category
+        context['is_not_subscriber'] = self.request.user not in self.post_category.subscribers.all()
+        context['post_category'] = self.post_category
         return context
 
 
