@@ -7,6 +7,9 @@ Post
 {% block content %}
 
 <h1>Все новости</h1>
+{% if is_not_subscriber %}
+<p class="text-center"><a href="{% url 'subscribe' post_category.id  %}"class="btn btn-sm">Подписаться</a></p>
+{%endif%}
    <h5>Новостей на странице: {{ Post|length }}</h5>
     <hr>
 {% if perms.new.add_post %}

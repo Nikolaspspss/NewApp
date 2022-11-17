@@ -5,7 +5,8 @@ from .models import Post, Category
 from django.http import HttpResponse
 from .filters import PostFilter
 from .forms import PostForm
-from django.shortcuts import get_object_or_404
+from django.shortcuts import get_object_or_404, render
+from django.contrib.auth.decorators import login_required
 
 
 
@@ -70,6 +71,7 @@ class PostSearch(ListView):
         return context
 
 
+
 class PostCreate(PermissionRequiredMixin, CreateView):
     permission_required = ('new.add_post',)
     form_class = PostForm
@@ -107,4 +109,11 @@ class CategoryListView(ListView):
         context['post_category'] = self.post_category
         return context
 
+@login_required
+def subscribe(request, pk):
+    user = request.user
+    category = Category.objects.get(id=pk)
+    category.subscribers.add(user)
+    message = "Успешная подписка"
+    return render(request, "subscribe.html", {'post_category': category, 'message': message})
 
