@@ -1,5 +1,5 @@
 from django.contrib.auth.mixins import PermissionRequiredMixin
-
+from django.core.mail import *
 from django.views.generic import ListView, DetailView, UpdateView, DeleteView, CreateView
 from .models import Post, Category
 from django.http import HttpResponse
@@ -12,6 +12,7 @@ from django.contrib.auth.decorators import login_required
 
 
 class PostList(ListView):
+
     model = Post
     template_name = 'News.html'
     context_object_name = 'Post'

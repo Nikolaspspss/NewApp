@@ -3,7 +3,7 @@ from django.db.models.signals import m2m_changed
 from .models import Category
 from django.conf import settings
 from django.template.loader import render_to_string
-from django.core.mail import EmailMultiAlternatives
+from django.core.mail import *
 
 
 
@@ -31,7 +31,7 @@ def send_notifications(preview, pk, title, subscribers):
 
 @receiver(m2m_changed, sender=Category)
 def notify_about_new_post(sender, instance, **kwargs):
-    if kwargs['action'] == 'add_post':
+    if kwargs['action'] == 'new.add_post':
         categories = instance.Category.all
         subscribers: list[str] = []
         for category in categories:
